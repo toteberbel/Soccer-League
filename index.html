@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link  rel="icon"   href="imagenes/favicon.ico" type="image/png">
+
+    <meta charset="UTF-8">
+
+    <!------------------ HACEMOS RESPONSIVO NUESTRO HTML ---------------------->
+
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="imagenes/icono.jpg">
+    <link rel="touch-startup-image" href="https://i.pinimg.com/736x/d1/1f/50/d11f506da1507bdf719b54f04fc5ebce.jpg">
+
+    <!-- ----------------------------- PARA EL CHAT ------------------------->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.blue_grey-orange.min.css">
+    <script src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+    <link rel="stylesheet" href="estilos/main.css">
+
+    <!------------------ BOOTSTRAP, ESTILOS MIOS Y FONT ---------------------->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="estilos/styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai&display=swap" rel="stylesheet">
+
+    <title>NORTH YOUTH SOCCER LEAGUE</title>
+
+</head>
+
+<body>
+    <div class="container cont-index" id="app">
+        <div class="row">
+
+
+
+            <!-- ---------------------------------ENCABEZADO ------------------------------------ -->
+            <div class="col-12 encabezado">
+                <img src="imagenes/bannerApp.jpg" class="img-fluid">
+
+            </div>
+
+            <!-- ---------------------------------LOGIN ------------------------------------ -->
+
+            <!-- Button trigger modal -->
+            <div class="col-6">
+                <button v-if="user == null" type="button" class="btn btn-success login" data-toggle="modal"
+                    data-target="#exampleModale">
+                    Log In
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModale" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Come on!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="datosLogin">
+                                    <label> Mail: <input type="text" name="mail" v-model="mail"> </label>
+                                    <label> Password: <input type="password" name="password" v-model="password"></label>
+                                </div>
+                                <img class="gif rounded-circle" src="imagenes/giphy.gif">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" v-on:click="login" class="btn btn-success in">Sign in!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ---------------------------------REGISTRO ------------------------------------ -->
+            <div class="col-6">
+
+                <button v-if="user == null" type="button" class="btn btn-warning login" data-toggle="modal"
+                    data-target="#exampleModalRegistro">
+                    Register Now
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModalRegistro" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Register now!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="datosLogin">
+                                    <form>
+                                        <label> Mail: <input type="text" name="mail" v-model="mail"> </label>
+                                        <label> Password: <input type="password" name="password" v-model="password">
+                                        </label>
+                                    </form>
+                                </div>
+                                <img class="gif rounded-circle"
+                                    src="https://66.media.tumblr.com/269288592a184920dd1dba3a26c21062/099c7f5ccf6c1dae-0b/s500x750/da46930759c24857eec469fb0fb8c2b8a2ce6e95.gifv">
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" v-on:click="registrar" class="btn btn-success in">Create your
+                                    account!</button>
+                                <button type="button" v-on:click="registrarGmail" class="btn btn-warning in">Entry with
+                                    your
+                                    Google account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ---------------------------------LOGOUT ------------------------------------ -->
+
+            <div class="col-12">
+
+                <button v-if="user != null" v-on:click="logout" type="button" class="btn btn-danger">
+                    Log Out
+                </button>
+            </div>
+        </div>
+
+
+
+        <!---------------------------- NAV ------------------------------------------------>
+
+
+        <div class="row mt-3 justify-content-center">
+            <div class="col-4">
+                <button type="button" class="btn btn-outline-primary" i d="botonHome"
+                    onclick="mostrarOcultar()">Home</button>
+            </div>
+            <div class="col-4">
+                <button type="button" class="btn btn-outline-primary" id="boton-info"
+                    onclick="mostrarOcultarInfo()">Game
+                    Info</button>
+            </div>
+            <div class="col-4">
+                <button type="button" class="btn btn-outline-primary" id="boton-contact"
+                    onclick="mostrarOcultarContacto()">Contact</button>
+            </div>
+
+        </div>
+
+
+        <!---------------------------- HOME PAGE ------------------------------------------------>
+
+        <div id="homePage">
+            <div class="row carrusel">
+                <div id="carouselExampleControls" class="col carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img class="d-block w-100"
+                                src="https://besthqwallpapers.com/Uploads/13-9-2018/65580/thumb2-antonio-candreva-4k-fc-internazionale-art-inter-milan-fc.jpg"
+                                alt="First slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100"
+                                src="https://besthqwallpapers.com/Uploads/30-12-2018/76310/thumb2-milan-skriniar-4k-slovak-football-player-inter-milan-fc-defender-internazionale-fc.jpg"
+                                alt="Second slide">
+                        </div>
+                        <div class="carousel-item">
+                            <img class="d-block w-100"
+                                src="https://besthqwallpapers.com/Uploads/25-8-2018/63099/thumb2-milan-skriniar-4k-abstract-art-internazionale-football.jpg"
+                                alt="Third slide">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            </div>
+
+
+
+            <div class="row justify-content-center">
+                <div class="col-8 col-sm-6 col-md-5 col-lg-4 contenido">
+
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">MISSION</h5>
+                            <p class="card-text">To support young athletes living in Chigago's northside neighborhoods,
+                                who
+                                have an
+                                interest in learning and playing soccer, with opportunities to learn and practice skills
+                                related
+                                to the game of soccer, specifically those skills around team cooperation and good
+                                sportsmanship.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8 col-sm-6 col-md-5 col-lg-4 contenido">
+
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">VISION</h5>
+                            <p class="card-text"> The northside Youth Soccer League aspires to develop strong,
+                                well-rounded, and windful athletes trough the building of character, self-discipline,
+                                and
+                                leadership</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-8 col-sm-6 col-md-5 col-lg-4 contenido">
+
+                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                            <h5 class="card-title">GENERAL INFORMATION</h5>
+                            <p class="card-text"> The northside Youth Soccer League was established in 1996 to provide
+                                athletes residing in Chicago </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ---------------------------------PAGINA DE CONTACTO ------------------------------------ -->
+
+        <div id="contactoPage" class="d-none">
+
+            <div class="row">
+                <div class="col">
+                    <h1>Contact us</h1>
+                </div>
+            </div>
+
+            <div class="row filaContact rounded">
+                <div class="col">
+                    <div id="email">
+                        <p class="ctc"> <b> Please email us at <a class="link" href="mailto:toteberbel@gmail.com"> here.
+                                </a> <br>
+                                We will reply to your email as soon as we can.</b>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- ------------------- INFORMACION DE LOS PARTIDOS ----------------------------- -->
+
+        <div id="juegoPage" class="d-none">
+
+            <div class="row">
+                <div class="col">
+                    <h1>Game Info</h1>
+
+                </div>
+            </div>
+
+            <div class="row" id="tablasSep">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 ">
+
+                    <table class="table table-striped table-dark rounded tab-sep">
+                        <thead>
+
+                            <tr>
+                                <th>SEPTEMBER</th>
+                                <th>TEAMS</th>
+                                <th>LOCATION</th>
+                                <th>TIMES</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td rowspan="2">9/01</td>
+                                <td>U1 and U4</td>
+                                <td>AJ Katzenmaier</td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(1)">CHAT</button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>U3 and U2</td>
+                                <td>Greenbayr</td>
+                                <td>1:00pm.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(2)">CHAT</button></td>
+                            </tr>
+
+
+                            <tr>
+                                <td rowspan="2">9/08 </td>
+                                <td>U5 and U6</td>
+                                <td>Howard A Yeager </td>
+                                <td>9:30 a.m</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(3)">CHAT</button></td>
+                            </tr>
+                            <tr>
+                                <td>U6 and U1</td>
+                                <td>Marjorie P Hart</td>
+                                <td>1:00 p.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(4)">CHAT</button></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">9/15</td>
+                                <td>U2 and U4</td>
+                                <td>North</td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(5)">CHAT</button></td>
+                            </tr>
+                            <tr>
+                                <td>U3 and U5</td>
+                                <td>AJ Katzenmaier</td>
+                                <td>1:00 p.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(6)">CHAT</button></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">9/22</td>
+                                <td>U1 and U3</td>
+                                <td>South</td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(7)">CHAT</button></td>
+                            </tr>
+                            <tr>
+                                <td>U2 and U6</td>
+                                <td>Howard A Yeager </td>
+                                <td>1:00 p.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(8)">CHAT</button></td>
+                            </tr>
+                            <tr>
+                                <td>9/29</td>
+                                <td>U4 and U5</td>
+                                <td>Greenbay </td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-primary chates"
+                                        v-on:click="chat(9)">CHAT</button></td>
+
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <div class="col-4 d-none d-sm-block adicional">
+
+                    <h3>For location details click on:</h3>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary boton-mapas" data-toggle="modal"
+                        data-target="#exampleModal">
+                        AJ Katzenmaier
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">AJ Katzenmaier</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.65406042619!2d-87.63123908470888!3d41.900296372004135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880fd34e07f6bac3%3A0x68a82e5d59952c86!2s24%20W%20Walton%20St%2C%20Chicago%2C%20IL%2060610%2C%20EE.%20UU.!5e0!3m2!1ses!2sar!4v1579085286215!5m2!1ses!2sar"
+                                        frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="https://goo.gl/maps/CsHi8fNRvHQhsLB17"><button type="button"
+                                            class="btn btn-primary">Abrir en Google Maps</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary boton-mapas" data-toggle="modal"
+                        data-target="#exampleModal">
+                        Greenbay Elementary
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Greenbay
+                                        Elementary</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.0256986745703!2d-87.64002798470851!3d41.913806271158215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880fd34073f306a3%3A0x9e1726bbf8f23f0e!2s1734%20N%20Orleans%20St%2C%20Chicago%2C%20IL%2060614%2C%20EE.%20UU.!5e0!3m2!1ses!2sar!4v1579086651890!5m2!1ses!2sar"
+                                        frameborder="0" allowfullscreen=""></iframe>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="https://goo.gl/maps/CsHi8fNRvHQhsLB17"><button type="button"
+                                            class="btn btn-primary">Abrir en Google Maps</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary boton-mapas" data-toggle="modal"
+                        data-target="#exampleModal">
+                        Howard A Yeager Elementary
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Howard A Yeager
+                                        Elementary</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2968.5854973847086!2d-87.66511458470822!3d41.92326857056563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880fd2e37f9b8d2d%3A0x62ad8b907dd755d6!2s2245%20N%20Southport%20Ave%2C%20Chicago%2C%20IL%2060614%2C%20EE.%20UU.!5e0!3m2!1ses!2sar!4v1579086755452!5m2!1ses!2sar"
+                                        frameborder="0" allowfullscreen=""></iframe>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="https://goo.gl/maps/CsHi8fNRvHQhsLB17"><button type="button"
+                                            class="btn btn-primary">Abrir en Google Maps</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary boton-mapas" data-toggle="modal"
+                        data-target="#exampleModal">
+                        Marjorie P Hart
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Marjorie P Hart
+                                        Elementary</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2968.291728953115!2d-87.648086284708!3d41.929582270170116!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880fd30f2630e551%3A0x3e719e44a5cef714!2s2625%20N%20Orchard%20St%2C%20Chicago%2C%20IL%2060614%2C%20EE.%20UU.!5e0!3m2!1ses!2sar!4v1579086882324!5m2!1ses!2sar"
+                                        frameborder="0" allowfullscreen=""></iframe>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="https://goo.gl/maps/CsHi8fNRvHQhsLB17"><button type="button"
+                                            class="btn btn-primary">Abrir en Google Maps</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary boton-mapas" data-toggle="modal"
+                        data-target="#exampleModal">
+                        North Elementary
+                    </button>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">North Elementary</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.3375536950075!2d-87.64837698470868!3d41.90710177157795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880fd33af0e6ccc3%3A0x26c81c1d557667da!2s1409%20N%20Ogden%20Ave%2C%20Chicago%2C%20IL%2060610%2C%20EE.%20UU.!5e0!3m2!1ses!2sar!4v1579086941073!5m2!1ses!2sar"
+                                        frameborder="0" allowfullscreen=""></iframe>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="https://goo.gl/maps/CsHi8fNRvHQhsLB17"><button type="button"
+                                            class="btn btn-primary">Abrir en Google Maps</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary boton-mapas" data-toggle="modal"
+                        data-target="#exampleModal">
+                        South Elementary
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">South
+                                        Elementary</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2968.7477648265985!2d-87.65355538470831!3d41.919780770784016!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x880fd3196fb41dc7%3A0x970be7f7d6336df5!2s2101%20N%20Fremont%20St%2C%20Chicago%2C%20IL%2060614%2C%20EE.%20UU.!5e0!3m2!1ses!2sar!4v1579086973302!5m2!1ses!2sar"
+                                        frameborder="0" allowfullscreen=""></iframe>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <a href="https://goo.gl/maps/CsHi8fNRvHQhsLB17"><button type="button"
+                                            class="btn btn-primary">Abrir en Google Maps</button></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" id="tablasOct">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 ">
+                    <table class=" table table-striped table-dark rounded tab-oct">
+                        <thead>
+                            <tr>
+                                <th> OCTOBER </th>
+                                <th>TEAMS</th>
+                                <th>LOCATION</th>
+                                <th>TIMES</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td rowspan="2">10/06</td>
+                                <td>U2 and U5</td>
+                                <td>Marjorie P Hart</td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(10)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+
+                                <td>U1 and U6</td>
+                                <td>South</td>
+                                <td>1:00 p.m. </td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(11)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+                                <td rowspan="2">10/13</td>
+                                <td>U3 and U4</td>
+                                <td>Howard A Yeager </td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(12)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+
+                                <td>U5 and U1 </td>
+                                <td>Greenbay </td>
+                                <td>1:00 p.m.</td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(13)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+                                <td rowspan="2">10/20</td>
+                                <td>U6 and U3</td>
+                                <td>North </td>
+                                <td>9:30 a.m. </td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(14)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+
+                                <td>U2 and U4</td>
+                                <td>Marjorie P Hart</td>
+                                <td>1:00 p.m.</td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(15)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+                                <td rowspan="2">10/27</td>
+                                <td>U3 and U1 </td>
+                                <td>AJ Katzenmaier 9</td>
+                                <td>9:30 a.m.</td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(16)">CHAT</button></td>
+
+                            </tr>
+                            <tr>
+
+                                <td>U5 and U6</td>
+                                <td>Howard A Yeager</td>
+                                <td>1:00 p.m.</td>
+                                <td><button type="button" class="btn btn-success chates"
+                                        v-on:click="chat(17)">CHAT</button></td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+
+
+            <div class="row justify-content-center">
+                <div class="col-8 d-xs-block d-sm-none">
+                    <div class="btn-group locations">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Game Locations
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="https://goo.gl/maps/CsHi8fNRvHQhsLB17">AJ Katzenmaier</a>
+                            <a class="dropdown-item" href="https://goo.gl/maps/CsHi8fNRvHQhsLB17">Greenbay
+                                Elementary</a>
+                            <a class="dropdown-item" href="https://goo.gl/maps/CsHi8fNRvHQhsLB17">Howard A Yeager</a>
+                            <a class="dropdown-item" href="https://goo.gl/maps/CsHi8fNRvHQhsLB17">Marjorie P Hart</a>
+                            <a class="dropdown-item" href="https://goo.gl/maps/CsHi8fNRvHQhsLB17">North Elementary</a>
+                            <a class="dropdown-item" href="https://goo.gl/maps/CsHi8fNRvHQhsLB17">South Elementary</a>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- -------------------------------- CHATES --------------------------------------->
+            <div v-if="user != null" id="chat" class="d-block">
+                <div class="row justify-content-center">
+                    <div class=" col-10 col-sm-6 cuerpoChat">
+
+                        <h2 class="inlineDiv">Share something:</h2>
+                        <div id="juegoChat"></div>
+                        <form>
+                            <div class="input-group">
+
+                                <!-- <input placeholder="Write here your message!" type="mensaje" name="mensaje"
+                                v-model="mensaje">-->
+                                <textarea class="form-control" placeholder="Write here your message!"
+                                    aria-label="With textarea" name="mensaje" v-model="mensaje">
+                             </textarea>
+
+                            </div>
+                            <a href="#final"><button type="button" class="btn btn-primary btn-chat" v-on:click="publicar"> Enviar
+                            </button></a>
+
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center">
+
+                    <div class="col-11 col-md-10 vistaMensajes rounded" v-for="post in mensajes">
+                        <div id="cuerpoMensaje" class="rounded-right">
+                            <label class="autorMensaje">From:</label><span class="spanes">{{ post.username }} </span>
+                            <div></div>
+                            <label class="autorMensaje">Message:</label><span class="spanes">{{ post.mensaje }} </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ---------------------------------------- FIREBASE (DEPLOY) -----------------------------------------------------------  -->
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-database.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.2/firebase-analytics.js"></script>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyCbiTsVTpLeQXFII1T3CGISJB6NCt6OP14",
+            authDomain: "toteapp-9ec50.firebaseapp.com",
+            databaseURL: "https://toteapp-9ec50.firebaseio.com",
+            projectId: "toteapp-9ec50",
+            storageBucket: "toteapp-9ec50.appspot.com",
+            messagingSenderId: "288022931564",
+            appId: "1:288022931564:web:2299931e3498637bf11049",
+            measurementId: "G-1LK1CZHPMZ"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+    </script>
+
+    <!-- ------------------------------ VUE, JQUERY y JS PAL BOOTSTRAP ---------------------------------->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
+
+    <script src="js/funciones.js"> </script>
+    <a id="final"></a>
+
+</body>
+
+</html>
