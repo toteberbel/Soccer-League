@@ -1,8 +1,9 @@
 body {
-    background-size: cover;
     margin: 0px;
     background-image: url(https://www.solofondos.com/wp-content/uploads/2015/11/Imagen-de-fondo-html-768x588.jpg);
     background-attachment: fixed;
+        background-size: cover;
+
 }
 
 .encabezado {

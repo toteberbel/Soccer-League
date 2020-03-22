@@ -29,6 +29,7 @@ function mostrarOcultarInfo() {
 }
 
 
+
 // --------------------------------------- PUBLICAR POSTS ----------------------------------------
 
 
@@ -76,7 +77,9 @@ var app = new Vue({
         },
 
         chat: function (number) {
-
+            if (app.user == null) {
+                alert("You must be log in to read messages");
+            }
             app.chatAbierto = number;
 
             document.getElementById("juegoChat").innerHTML = "<h2 class='inlineDiv'> Game " + app.chatAbierto + "</h2>";
@@ -88,6 +91,8 @@ var app = new Vue({
             });
             tablasSep.classList.add("d-none");
             tablasOct.classList.add("d-none");
+
+
 
         },
 
@@ -109,14 +114,14 @@ var app = new Vue({
         },
 
         registrarGmail: function () {
-            
+
             var provider = new firebase.auth.GoogleAuthProvider();
             firebase.auth().signInWithPopup(provider)
-            .then(function() {
-                $('#exampleModalRegistro').modal('hide')
+                .then(function () {
+                    $('#exampleModalRegistro').modal('hide')
 
-            });
-           
+                });
+
         },
 
 
@@ -136,4 +141,4 @@ function funsi(user) {
 };
 
 
-firebase.auth().onAuthStateChanged(funsi); 
+firebase.auth().onAuthStateChanged(funsi);
